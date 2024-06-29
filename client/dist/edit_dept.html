@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Department</title>
+    <link rel="stylesheet" href="./style/edit_dept.css">
+</head>
+<body onload="loadData()">
+    <h1 id="user_name"></h1>
+    <h2>Edit Department Page</h2>
+    <div class="container">
+        <div class="form-container">
+            <form id="submit-form">
+                <div class="form-row">
+                    <label for="name">Department Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-row">
+                    <label for="managerName">Department Manager</label>
+                    <input type="text" id="managerName" name="managerName" disabled>
+                </div>
+                <div class="form-row">
+                    <label for="empName">Replace manager with different department employee</label>
+                    <select id="empName">
+                        <option value=""></option>
+                        <!-- load manager's names and ids -->
+                    </select>
+                </div>
+                <div class="form-row">
+                    <button class="update-btn" type="submit">Update Department Info</button>
+                </div>
+            </form>
+        </div>
+        <div class="transfer-container">
+            <div class="form-row">
+                <label for="notBelongEmps">Transfer employee to this department (no managers)</label>
+                <select name="notBelongEmps" id="notBelongEmps">
+                    <option value=""></option>
+                    <!-- load employees not belong to the department -->
+                </select>
+                <button id="changeDept" class="register-btn">Register to Department</button>
+            </div>
+        </div>
+    </div>
+    <div class="button-group">
+        <button id="backToEmps" onclick='window.location.href = "./employees.html"'>Back To Employees</button>
+        <button id="backToDepts" onclick='window.location.href = "./departments.html"'>Back To Departments</button>
+        <button id="deleteDept" class="delete-button">Delete department and related employees</button>
+    </div>
+</body>
+<script src="./bundles/bundle_edit_dept.js"></script>
+</html>

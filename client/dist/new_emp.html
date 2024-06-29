@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Employee</title>
+    <link rel="stylesheet" type="text/css" href="style/new_emp_dept.css">
+</head>
+<body onload="loadData()">
+    <h1 id="name"></h1>
+    <h2>New Employee Page</h2>
+    <form id="submit-form">
+        <div class="user-row">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="user-row">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="user-row">
+            <label for="startWorkYear">Start Work Year:</label>
+            <input type="number" id="startWorkYear" name="startWorkYear" required>
+        </div>
+        <div class="user-row">
+            <label for="department">Department:</label>
+            <select id="department">
+                <!-- load departments names and ids -->
+            </select>
+        </div>
+        
+        <div class="button-row">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    <button id="backToEmps" class="cancel-button">Cancel</button>
+</body>
+<script src="./bundles/bundle_new_emp.js"></script>
+</html>

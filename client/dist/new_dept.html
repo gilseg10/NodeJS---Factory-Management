@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Department</title>
+    <link rel="stylesheet" type="text/css" href="style/new_emp_dept.css">
+</head>
+<body onload="loadData()">
+    <h1 id="user_name"></h1>
+    <h2>New Department Page</h2>
+    <form id="submit-form">
+        <div class="user-row">
+            <label for="dept_name">Department Name</label>
+            <input type="text" id="dept_name" name="dept_name" required>
+        </div>
+        <div class="user-row">
+            <label for="not-managers">Choose Manager</label>
+            <select id="not-managers">
+                <!-- load departments names and ids -->
+            </select>
+        </div>        
+        <div class="button-row">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    <button id="backToDepts" class="cancel-button">Cancel</button>
+</body>
+<script src="./bundles/bundle_new_dept.js"></script>
+</html>

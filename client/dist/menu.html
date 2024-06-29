@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Menu</title>
+    <link rel="stylesheet" href="./style/menu.css">
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Factory Menu</h1>
+        <h2 id="name"></h2>
+        <div class="menu-card">
+            <a href="employees.html">Employees Page</a>
+            <strong>Manage employee information</strong>
+            <ul>
+                <li>View and change employee details.</li>
+                <li>Create new employees.</li>
+                <li>Delete employees.</li>
+                <li>Filter employees by department name.</li>
+            </ul>
+        </div>
+        <div class="menu-card">
+            <a href="departments.html">Departments Page</a>
+            <strong>Manage departments information</strong>
+            <ul>
+                <li>View and change department details.</li>
+                <li>Create new deparments.</li>
+                <li>Delete deparments.</li>
+                <li>Assign employees to departments.</li>
+            </ul>
+        </div>
+        <div class="menu-card">
+            <a href="shifts.html">Shifts Page</a>
+            <strong>Manage shifts information</strong>
+            <ul>
+                <li>View and change shifts details.</li>
+                <li>Assign employees to shifts.</li>
+                <li>Create new shifts.</li>
+            </ul>
+        </div>
+        <div class="menu-card">
+            <a href="users.html">Users Page</a>
+            <strong>View users information</strong>
+            <ul>
+                <li>Check maximum actions allowd for user per day.</li>
+                <li>Check remaining actions allowd for user in current date.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+<script>
+    const name = sessionStorage.getItem("fullName")
+    document.getElementById("name").innerText = name
+</script>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Employee</title>
+    <link rel="stylesheet" href="./style/edit_emp.css">
+</head>
+<body onload="loadData()">
+    <h1 id="name"></h1>
+    <h2>Edit Employee Page</h2>
+    <div class="container">
+        <div class="div-form">
+            <form id="submit-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startWorkYear">Start Work Year</label>
+                        <input type="number" id="startWorkYear" name="startWorkYear" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select id="department" name="department">
+                            <!-- load departments names and ids -->
+                        </select>
+                    </div>
+                </div>
+                <button class="update-btn" type="submit">Update Personal Info</button>
+            </form>
+        </div>
+        <div class="div-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Start Hour</th>
+                        <th>End Hour</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <!-- rows of shifts info -->
+                </tbody>
+            </table>
+            <div class="shift-selection">
+                <label for="emp_shifts">Select Shifts to Assign</label>
+                <select name="emp_shifts" id="emp_shifts">
+                    <option value=""></option>
+                    <!-- load shifts to select -->
+                </select>
+                <button id="newShift" class="newShift-btn">Register to Shift</button>
+            </div>
+        </div>
+    </div>
+    <div class="button-group">
+        <button id="backToEmps">Back To Employees</button>
+        <button id="backToDepts">Back To Departments</button>
+        <button id="backToShifts">Back To Shifts</button>
+        <button id="deleteEmp" class="delete-button">Delete Employee</button>
+    </div>
+</body>
+<script src="./bundles/bundle_edit_emp.js"></script>
+</html>

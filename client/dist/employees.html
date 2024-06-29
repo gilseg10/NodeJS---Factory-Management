@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/employees.css">
+    <title>Employees Page</title>
+</head>
+<body onload="loadData()">
+    <h1 id="name"></h1>
+    <h2>Employees Page</h2>
+    <div id="emp_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Shifts</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- add here employees data -->
+            </tbody>
+        </table>
+    </div>
+    <div class="controls">
+        <div class="new-employee">
+            <button id="newEmployeeBtn">New Employee</button>
+        </div>
+        <div class="filter-group">
+            <label for="departments">Filter employees by department</label>
+            <select name="departments" id="departments">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="back-menu">
+            <button id="backToMenuBtn">Back To Menu</button>
+        </div>
+    </div>
+</body>
+<script src="./bundles/bundle_employees.js"></script>
+</html>

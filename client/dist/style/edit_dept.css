@@ -1,0 +1,140 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+/* Container Styles */
+.container {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    gap: 30px; /* Controls the gap between form and transfer containers */
+}
+
+/* Form Container Styles */
+.form-container {
+    display: flex;
+    justify-content: center;
+    width: 40%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.form-row {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 80%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    display: block;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #145498;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 50%;
+    transition-duration: 0.2s;
+}
+
+button:hover {
+    background-color: #023469;
+    font-weight: bold;
+    font-size: 16px;
+    transition-duration: 0.2s;
+}
+
+.register-btn, .update-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #145498;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.register-btn:hover, .update-btn:hover {
+    background-color: #0056b3;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+/* Transfer Container Styles */
+.transfer-container {
+    width: 35%;
+    background-color: #fff;
+    padding-left: 80px;
+    padding-top: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.transfer-container .form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.transfer-container select {
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.transfer-container button {
+    margin-top: 10px;
+}
+
+/* Button Group Styles */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.button-group button {
+    width: 20%; /* Set a fixed width for buttons */
+    margin-bottom: 10px;
+}
+
+.delete-button {
+    background-color: #FF0000; /* Red color for delete button */
+    margin-top: 20px;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+}

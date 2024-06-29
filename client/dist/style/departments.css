@@ -1,0 +1,101 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+/* Table Styles */
+#dept_table {
+    width: 80%;
+    margin: 20px auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: solid #8ba7c4 2px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+th {
+    text-align: center;
+    background-color: #f4f4f4;
+    color: cadetblue
+}
+
+/* Link Styles */
+a {
+    text-decoration: none;
+    color: indigo
+}
+
+a:visited {
+    color: indigo
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #e9e9e9;
+}
+
+/* Button Group Styles */
+div button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #145498;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 0 10px;
+    transition-duration: 0.2s;
+}
+
+button:hover {
+    background-color: #023469;
+    font-weight: bold;
+    font-size: 16px;
+    transition-duration: 0.2s;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

@@ -1,0 +1,10 @@
+{
+    "actions": [
+        {"id": 1, "maxActions": 5, "date": "26/6/2024", "actionAllowd": 4},
+        {"id": 1, "maxActions": 5, "date": "26/6/2024", "actionAllowd": 3},
+        {"id": 1, "maxActions": 5, "date": "26/6/2024", "actionAllowd": 2},
+        {"id": 1, "maxActions": 5, "date": "27/6/2024", "actionAllowd": 4},
+        {"id": 2, "maxActions": 7, "date": "27/6/2024", "actionAllowd": 6},
+        {"id": 2, "maxActions": 7, "date": "27/6/2024", "actionAllowd": 5}
+    ]
+}

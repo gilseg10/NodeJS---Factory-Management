@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments Page</title>
+    <link rel="stylesheet" href="./style/departments.css">
+</head>
+<body onload="loadData()">
+    <h1 id="name"></h1>
+    <h2>Department Page</h2>
+    <div id="dept_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Manager</th>
+                    <th>Employees</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- add here deparments data -->
+            </tbody>
+        </table>
+    </div>
+    <div class="button-group">
+        <button id="newDept">New Deparment</button>
+        <button id="backToMenuBtn">Back To Menu</button>
+    </div>
+</body>
+<script src="./bundles/bundle_departments.js"></script>
+</html>
