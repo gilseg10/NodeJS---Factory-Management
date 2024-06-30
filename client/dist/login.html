@@ -34,11 +34,9 @@
         })
         const data = await res.json()
         if (data.status === "success") {
-            console.log({status: data.status})
             sessionStorage.setItem("token", data.token)
             sessionStorage.setItem("fullName", data.fullName)
-            sessionStorage.setItem("id", data.id)
-
+            sessionStorage.setItem("id", data.jph_id)
             window.location.href = "./menu.html"
         } else {
             console.log({status: data.status, message: data.error})

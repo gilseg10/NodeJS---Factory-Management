@@ -33,10 +33,22 @@ router.post('/login', async (req, res) => {
     }
 })
 
+// get all users data: fullName, jph_id, maxActions and remaining actions 
 router.get('/', async (req, res) => {
     try {
         const users = await userService.getUsersData()
         res.send(users)
+    } catch (e) {
+        res.send(e)
+    }
+})
+
+// route for adding action object in json
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const action = await userService.addAction(id)
+        res.send(action)
     } catch (e) {
         res.send(e)
     }

@@ -119,9 +119,9 @@ select {
 }
 
 .new-employee {
-    text-align: left;
+    text-align: right;
 }
 
 .back-menu {
-    text-align: right;
+    text-align: left;
 }

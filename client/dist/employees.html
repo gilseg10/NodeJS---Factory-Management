@@ -9,6 +9,20 @@
 <body onload="loadData()">
     <h1 id="name"></h1>
     <h2>Employees Page</h2>
+    <div class="controls">
+        <div class="back-menu">
+            <button id="backToMenuBtn">Back To Menu</button>
+        </div>
+        <div class="filter-group">
+            <label for="departments">Filter employees by department</label>
+            <select name="departments" id="departments">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="new-employee">
+            <button id="newEmployeeBtn">New Employee</button>
+        </div>
+    </div>
     <div id="emp_table">
         <table>
             <thead>
@@ -22,20 +36,6 @@
                 <!-- add here employees data -->
             </tbody>
         </table>
-    </div>
-    <div class="controls">
-        <div class="new-employee">
-            <button id="newEmployeeBtn">New Employee</button>
-        </div>
-        <div class="filter-group">
-            <label for="departments">Filter employees by department</label>
-            <select name="departments" id="departments">
-                <option value="">All</option>
-            </select>
-        </div>
-        <div class="back-menu">
-            <button id="backToMenuBtn">Back To Menu</button>
-        </div>
     </div>
 </body>
 <script src="./bundles/bundle_employees.js"></script>

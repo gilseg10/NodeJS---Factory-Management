@@ -27,17 +27,26 @@ const getUsersData = async () => {
     return Promise.all(users_promises)
 }
 
+const addAction = async (id) => {
+    const users_db = await userRepoDB.getAll()
+    const user = users_db.find(user => user.jph_id.toString() === id) // return maxActions
+    const result = await getAllowdAction(user.jph_id)
+    const actionAllowd = result === -1 ? user.maxActions : result
+    // console.log(typeof actionAllowd)
+    return res = await userRepoJson.setAction({
+        id: +id, 
+        maxActions: user.maxActions,
+        date: doCurrentDate(),
+        actionAllowd: actionAllowd - 1
+    })
+}
+
+
 const getAllowdAction = async (id) => {
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let currentDate = `${day}/${month}/${year}`;
-    
     const data = await userRepoJson.readActions()
     const users_actions = data.actions
     
-    const user_actions = users_actions.filter(action => action.id === id && action.date === currentDate)
+    const user_actions = users_actions.filter(action => action.id === id && action.date === doCurrentDate())
     if (user_actions.length !==0) {
         const actionsAllowd = user_actions.map(action => action.actionAllowd)
         const actionAllowd = Math.min(...actionsAllowd)
@@ -46,9 +55,18 @@ const getAllowdAction = async (id) => {
         return -1
     } 
 }
+const doCurrentDate = () => {
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `${day}/${month}/${year}`;
+    return currentDate
+}
 
 module.exports = {
     login,
     getUsersData,
+    addAction,
     getAllowdAction
 }

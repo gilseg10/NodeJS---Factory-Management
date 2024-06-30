@@ -1,6 +1,7 @@
 // -------------- Users End Points --------------
 
 const users_route = "http://localhost:3000/users"
+
 const fetchUsers = async () => {
     try {
         const resp = await fetch(users_route, {
@@ -9,6 +10,19 @@ const fetchUsers = async () => {
         })
         const users = await resp.json()
         return users
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
+const addAction = async (user_id) => {
+    try {
+        const resp = await fetch(users_route + '/' + user_id, {
+            method: "GET",
+            // headers: { "x-access-token": token }
+        })
+        const action = await resp.json()
+        return action
     } catch (e) {
         console.log(e.message)
     }
@@ -301,6 +315,7 @@ const updateShift = async (id, shift) => {
 
 module.exports = {
     fetchUsers,
+    addAction,
 
     fetchEmps,
     fetchEmpById,

@@ -10,7 +10,7 @@ const setAction = async (action) => {
     const data = await jsonfile.readFile(FILE);
     data.actions.push(action)
     await jsonfile.writeFile(FILE, data)
-    return 'Added Succesfully'
+    return {status: "success", action}
 }
 
 module.exports = {

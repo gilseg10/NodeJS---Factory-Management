@@ -1,14 +1,16 @@
-import { fetchEmps, fetchDeptsNameId } from './utils.js';
+import { fetchEmps, fetchDeptsNameId, addAction } from './utils.js';
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
-
+    const user_id = sessionStorage.getItem("id")
+    await checkUserAllowd(user_id.toString())
+    
     // const token = sessionStorage.getItem("token")
     // if (!token) {
     //     window.location.href = "./login.html"
     // }
-
+        
     try {
         const emps = await fetchEmps()
         const depts_name_id = await fetchDeptsNameId()
@@ -83,6 +85,14 @@ function filterEmps() {
         else {
             row.style.display = ""
         }
+    }
+}
+
+async function checkUserAllowd(id) {
+    const result = await addAction(id.toString())
+    console.log(result)
+    if (result.action.actionAllowd === 0) {
+        window.location.href = "./login.html"
     }
 }
 
