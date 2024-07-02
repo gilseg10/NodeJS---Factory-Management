@@ -5,7 +5,8 @@ import {
     updateEmployee,
     deleteEmployee,
     updateDepartment,
-    createEmpShift
+    createEmpShift,
+    addAction
 } from './utils.js';
 
 async function loadData() {
@@ -23,6 +24,13 @@ async function loadData() {
         // fetch unassigned shifts of the employee
         const unassignedShifts = await fetchUnassigned(emp_id)
         arrangeData(employee, depts, unassignedShifts)
+        // check if the page was reloaded or navigated to
+        const navigationEntries = performance.getEntriesByType('navigation')
+        const navigationEntry = navigationEntries[0];
+        if (navigationEntry.type !== 'reload') {
+            const user_id = sessionStorage.getItem("id")
+            await addActionCheckAllowd(user_id, "Presenting Employee Info")
+        }
     } catch (e) {
         console.log(e.message)
     }
@@ -83,6 +91,8 @@ function arrangeData(emp, depts, unassignedShifts) {
 // update employee data 
 async function updateEmp(event) {
     event.preventDefault()
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Update Employee Info")
     // send body of employee properties
     const firstName = document.getElementById("firstName").value
     const lastName = document.getElementById("lastName").value
@@ -107,6 +117,8 @@ async function updateEmp(event) {
 
 // delete the employee data and his shifts
 async function deleteEmp() {
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Delete Employee")
     const emp_id = sessionStorage.getItem("emp_id")
     try {
         const result = await deleteEmployee(emp_id)
@@ -140,13 +152,26 @@ async function createNewEmpShift() {
     const shiftID = document.getElementById("emp_shifts").value
     if (shiftID !== "") {
         try {
+            const msg = "Created New Employee Shift"
+            const user_id = sessionStorage.getItem("id")
+            await addActionCheckAllowd(user_id, msg)
             const result = await createEmpShift({ employeeID, shiftID })
-            window.location = window.location.href
+            window.alert(msg)
+            window.location.reload()
         } catch (e) {
             console.log(e.message)
         }
     } else {
         window.alert("Please choose a shift first!")
+    }
+}
+
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
+    if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
+        window.location.href = "./login.html"
     }
 }
 

@@ -34,10 +34,20 @@
         })
         const data = await res.json()
         if (data.status === "success") {
-            sessionStorage.setItem("token", data.token)
-            sessionStorage.setItem("fullName", data.fullName)
-            sessionStorage.setItem("id", data.jph_id)
-            window.location.href = "./menu.html"
+            const resp = await fetch(`http://localhost:3000/users/actionAllowd/${data.jph_id}`, {
+                method: "GET"
+            })
+            const res = await resp.json()
+            if (res.actionAllowd === 0) {
+                window.alert("You Have No More Action For Today")
+            } else {
+                sessionStorage.setItem("token", data.token)
+                sessionStorage.setItem("fullName", data.fullName)
+                sessionStorage.setItem("id", data.jph_id)
+                sessionStorage.setItem("actionAllowd", data.actionAllowd)
+                window.location.href = "./menu.html"
+            }
+
         } else {
             console.log({status: data.status, message: data.error})
         }

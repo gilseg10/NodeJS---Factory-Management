@@ -1,4 +1,4 @@
-import { createEmployee, fetchDeptsNameId } from './utils.js';
+import { createEmployee, fetchDeptsNameId, addAction } from './utils.js';
 
 
 async function loadData() {
@@ -25,6 +25,9 @@ function arrangeData(depts) {
 
 async function createEmp(event) {
     event.preventDefault()
+    const user_id = sessionStorage.getItem("id")
+    const msg = "Created New Employee"
+    await addActionCheckAllowd(user_id, msg)
     const firstName = document.getElementById("firstName").value
     const lastName = document.getElementById("lastName").value
     const startWorkYear = document.getElementById("startWorkYear").value
@@ -33,9 +36,19 @@ async function createEmp(event) {
     try {
         const result = await createEmployee({ firstName, lastName, startWorkYear, departmentID })
         sessionStorage.setItem("New Emp", JSON.stringify(result))
+        window.alert(msg)
         window.location.href = "./employees.html"
     } catch (e) {
         console.log(e)
+    }
+}
+
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
+    if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
+        window.location.href = "./login.html"
     }
 }
 

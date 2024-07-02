@@ -1,4 +1,4 @@
-import { fetchDepts } from './utils.js';
+import { fetchDepts, addAction } from './utils.js';
 
 
 async function loadData() {
@@ -13,6 +13,8 @@ async function loadData() {
     try {
         const depts = await fetchDepts()
         arrangeData(depts)
+        const user_id = sessionStorage.getItem("id")
+        await addActionCheckAllowd(user_id, "Presenting Departments Page")
     } catch (e) {
         console.log(e.message)
     }
@@ -63,6 +65,15 @@ function arrangeData(depts) {
         deptTr.appendChild(empListTd)
         tbody.appendChild(deptTr)
     })
+}
+
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
+    if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
+        window.location.href = "./login.html"
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -54,4 +54,16 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.get('/actionAllowd/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const actionAllowd = await userService.getAllowdAction(id)
+        res.send(actionAllowd)
+    } catch (e) {
+        res.send(e)
+    }
+})
+
+// http://localhost:3000/users/actionAllowd/${data.jph_id}
+
 module.exports = router

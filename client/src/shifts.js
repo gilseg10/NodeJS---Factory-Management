@@ -2,7 +2,8 @@ import {
     fetchShifts, 
     createEmpShift, 
     updateShift,
-    createShift 
+    createShift,
+    addAction 
 } from "./utils.js"
 
 async function loadData() {
@@ -17,13 +18,19 @@ async function loadData() {
     try {
         const shifts = await fetchShifts()
         arrangeData(shifts)
+        // check if the page was reloaded or navigated to
+        const navigationEntries = performance.getEntriesByType('navigation')
+        const navigationEntry = navigationEntries[0];
+        if (navigationEntry.type !== 'reload') {
+            const user_id = sessionStorage.getItem("id")
+            await addActionCheckAllowd(user_id, "Presenting Shifts Page")
+        }
     } catch (e) {
         console.log(e.message)
     }
 }
 
 function arrangeData(shifts) {
-    console.log(shifts)
     // arrange employees info in the table
     const tbody = document.getElementById("tbody")
 
@@ -84,16 +91,20 @@ function arrangeData(shifts) {
 
 async function registerEmp(shiftID) {
     const employeeID = document.getElementById(shiftID+'_select').value
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Registerd Employee To Shift")
     try {
         const result = await createEmpShift({ shiftID, employeeID })
         sessionStorage.setItem("New EmpShift", JSON.stringify(result))
-        window.location = window.location.href
+        window.location.reload()
     } catch (e) {
         console.log(e)
     }
 }
 
 async function saveChanges() {
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Update Shifts Info")
     const dom_shifts = document.getElementById("tbody").children
     // let shifts = []
     for (let i = 0; i < dom_shifts.length; i++) {
@@ -124,6 +135,8 @@ async function saveChanges() {
 
 async function createNewShift(event) {
     event.preventDefault()
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Created New Shift")
     const shiftDate = document.getElementById("date").value
     const date = shiftDate.split('-').reverse().join('/')
     const startingHour = document.getElementById("shift-start").value
@@ -132,7 +145,7 @@ async function createNewShift(event) {
         try {
             const result = await createShift({ date, startingHour, endingHour })
             sessionStorage.setItem("New Shift", JSON.stringify(result))
-            window.location = window.location.href
+            window.location.reload()
         } catch (e) {
             console.log(e)
         }
@@ -165,6 +178,15 @@ function highlight(obj) {
     setTimeout(function(){
         obj.style.backgroundColor = orig
     }, 5000)
+}
+
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
+    if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
+        window.location.href = "./login.html"
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

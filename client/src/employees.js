@@ -3,8 +3,6 @@ import { fetchEmps, fetchDeptsNameId, addAction } from './utils.js';
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
-    const user_id = sessionStorage.getItem("id")
-    await checkUserAllowd(user_id.toString())
     
     // const token = sessionStorage.getItem("token")
     // if (!token) {
@@ -15,6 +13,8 @@ async function loadData() {
         const emps = await fetchEmps()
         const depts_name_id = await fetchDeptsNameId()
         arrangeData(emps, depts_name_id)
+        const user_id = sessionStorage.getItem("id")
+        await addActionCheckAllowd(user_id, "Presenting Employees Page")
     } catch (e) {
         console.log(e.message)
     }
@@ -73,7 +73,7 @@ function arrangeData(emps, depts_name_id) {
     })
 }
 
-function filterEmps() {
+async function filterEmps() {
     const department_name = document.getElementById("departments").value
     const tbody = document.getElementById("tbody")
     for (const row of tbody.children) {
@@ -86,12 +86,15 @@ function filterEmps() {
             row.style.display = ""
         }
     }
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Filtering Employees")
 }
 
-async function checkUserAllowd(id) {
-    const result = await addAction(id.toString())
-    console.log(result)
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
     if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
         window.location.href = "./login.html"
     }
 }

@@ -1,12 +1,20 @@
-import { fetchUsers } from './utils.js';
+import { fetchUsers, addAction } from './utils.js';
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName");
     document.getElementById("name").innerText = name;
 
     try {
-        const users = await fetchUsers();
-        arrangeData(users);
+        const users = await fetchUsers()
+        arrangeData(users)
+        // check if the page was reloaded or navigated to
+        const navigationEntries = performance.getEntriesByType('navigation')
+        const navigationEntry = navigationEntries[0];
+        // if just reloaded, dont count as action
+        if (navigationEntry.type !== 'reload') {
+            const user_id = sessionStorage.getItem("id")
+            await addActionCheckAllowd(user_id, "Presenting Users Page")
+        }
     } catch (e) {
         console.log(e.message);
     }
@@ -22,13 +30,23 @@ function arrangeData(users) {
         const userTdMaxAc = document.createElement("td");
         userTdMaxAc.innerText = user.maxActions;
         const userTdRemAc = document.createElement("td");
-        userTdRemAc.innerText = user.actionAllowd;
-
+        const user_id = sessionStorage.getItem("id")
+        // including this action for the active user
+        userTdRemAc.innerText = +user_id === user.jph_id ? user.actionAllowd - 1 : user.actionAllowd  
         userTr.appendChild(userTdName);
         userTr.appendChild(userTdMaxAc);
         userTr.appendChild(userTdRemAc);
         tbody.appendChild(userTr);
     });
+}
+
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
+    if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
+        window.location.href = "./login.html"
+    }
 }
 
 window.loadData = loadData;

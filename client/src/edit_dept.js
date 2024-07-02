@@ -4,7 +4,8 @@ import {
     fetchEmpsNotDept,
     updateDepartment,
     updateEmployee,
-    deleteDepartment
+    deleteDepartment,
+    addAction
 } from './utils.js';
 
 async function loadData() {
@@ -21,6 +22,13 @@ async function loadData() {
         // fetch employees not in the department
         const unassignedEmps = await fetchEmpsNotDept(dept_id)
         arrangeData(department, assignedEmps, unassignedEmps)
+         // check if the page was reloaded or navigated to
+         const navigationEntries = performance.getEntriesByType('navigation')
+         const navigationEntry = navigationEntries[0];
+         if (navigationEntry.type !== 'reload') {
+             const user_id = sessionStorage.getItem("id")
+             await addActionCheckAllowd(user_id, "Presenting Department Info")
+         }
     } catch (e) {
         console.log(e.message)
     }
@@ -58,8 +66,11 @@ function arrangeData(department, assignedEmps, unassignedEmps) {
     })
 }
 
+// changing department info
 async function updateDept(event) {
     event.preventDefault()
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Update Department Info")
     const name = document.getElementById("name").value
     const managerID = document.getElementById("empName").value
     // if different manager didn't selected, we want to send only the name
@@ -69,23 +80,26 @@ async function updateDept(event) {
     try {
         const result = await updateDepartment(dept_id, body_obj)
         sessionStorage.setItem("updatedDept", JSON.stringify(result))
-        window.location = window.location.href
+        window.alert(`${name} Department info was updated`)
     } catch (e) {
         console.log(e.message)
     }
 }
 
+// assigning other department employee to this department
 async function changeDeptforEmp() {
     const departmentID = sessionStorage.getItem("dept_id")
     const emp_id = document.getElementById("notBelongEmps").value
     if (emp_id === '') {
         window.alert("You didnt chose any employee")
     } else {
+        const user_id = sessionStorage.getItem("id")
+        await addActionCheckAllowd(user_id, "Assign Employee To Department")
         try {
-            const updatedDept = updateEmployee(emp_id, { departmentID })     
+            const updatedDept = await updateEmployee(emp_id, { departmentID })     
             sessionStorage.setItem("updateResults", JSON.stringify(updatedDept))
             window.alert(`Employee id: ${emp_id} was assign to this department`)
-            window.location = window.location.href
+            window.location.reload()
         } catch (e) {
             console.log(e.message)
         }
@@ -93,6 +107,8 @@ async function changeDeptforEmp() {
 }
 
 async function deleteDept() {
+    const user_id = sessionStorage.getItem("id")
+    await addActionCheckAllowd(user_id, "Delete Department With Related Employees")
     const dept_id = sessionStorage.getItem("dept_id")
     try {
         const result = await deleteDepartment(dept_id)
@@ -101,6 +117,15 @@ async function deleteDept() {
         window.location.href = "./departments.html"
     } catch (e) {
         console.log(e.message)
+    }
+}
+
+async function addActionCheckAllowd(user_id ,msg) {
+    const result = await addAction(user_id.toString())
+    sessionStorage.setItem("actionAllowd", result.action.actionAllowd)
+    if (result.action.actionAllowd === 0) {
+        window.alert(`Notice! You have exhausted all the actions for today\nLast Action: ${msg}`)
+        window.location.href = "./login.html"
     }
 }
 
