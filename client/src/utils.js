@@ -16,27 +16,29 @@ const fetchUsers = async () => {
 }
 
 const addAction = async (user_id) => {
-    try {
-        const resp = await fetch(users_route + '/' + user_id, {
-            method: "GET",
-            // headers: { "x-access-token": token }
-        })
-        const action = await resp.json()
-        return action
-    } catch (e) {
-        console.log(e.message)
-    }
+    // DUMMY - disconnect actions for now
+    return {action: {actionAllowd: 1}}
+    // try {
+    //     const resp = await fetch(users_route + '/' + user_id, {
+    //         method: "GET",
+    //         // headers: { "x-access-token": token }
+    //     })
+    //     const action = await resp.json()
+    //     return action
+    // } catch (e) {
+    //     console.log(e.message)
+    // }
 }
 
 // -------------- Employees End Points --------------
 
 const emp_route = "http://localhost:3000/emps"
 
-const fetchEmps = async () => {
+const fetchEmps = async (token) => {
     try {
         const resp = await fetch(emp_route, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const emps = await resp.json()
         return emps
@@ -45,11 +47,11 @@ const fetchEmps = async () => {
     }
 }
 
-const fetchEmpById = async (id) => {
+const fetchEmpById = async (id, token) => {
     try {
         const resp = await fetch(emp_route + '/' + id, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const employee = await resp.json()
         return employee
@@ -58,11 +60,11 @@ const fetchEmpById = async (id) => {
     }
 }
 
-const fetchEmpInDept = async (dept_id) => {
+const fetchEmpInDept = async (dept_id, token) => {
     try {
         const resp = await fetch(emp_route + '/department/' + dept_id, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const assignedEmps = await resp.json()
         return assignedEmps
@@ -71,11 +73,11 @@ const fetchEmpInDept = async (dept_id) => {
     }
 }
 
-const fetchNotManagers = async () => {
+const fetchNotManagers = async (token) => {
     try {
         const resp = await fetch(emp_route + '/catagory/not_managers', {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const not_managers = await resp.json()
         return not_managers
@@ -84,13 +86,13 @@ const fetchNotManagers = async () => {
     }
 }
 
-const createEmployee = async (emp) => {
+const createEmployee = async (emp, token) => {
     try {
         const resp = await fetch(`${emp_route}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // token
+                "x-access-token": token
             },
             body: JSON.stringify({ ...emp })
         })
@@ -101,13 +103,13 @@ const createEmployee = async (emp) => {
     }
 }
 
-const updateEmployee = async (id, emp) => {
+const updateEmployee = async (id, emp, token) => {
     try {
         const resp = await fetch(`${emp_route}/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                // token
+                "x-access-token": token
             },
             body: JSON.stringify({ ...emp })
         })
@@ -118,10 +120,11 @@ const updateEmployee = async (id, emp) => {
     }
 }
 
-const deleteEmployee = async (id) => {
+const deleteEmployee = async (id, token) => {
     try {
         const resp = await fetch(`${emp_route}/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: { "x-access-token": token }
         })
         const result = await resp.json()
         return result
@@ -134,11 +137,11 @@ const deleteEmployee = async (id) => {
 
 const dept_route = "http://localhost:3000/department"
 
-const fetchDepts = async () => {
+const fetchDepts = async (token) => {
     try {
         let resp = await fetch(dept_route, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const depts = await resp.json()
         return depts
@@ -147,11 +150,11 @@ const fetchDepts = async () => {
     }
 }
 
-const fetchDeptById = async (id) => {
+const fetchDeptById = async (id, token) => {
     try {
         let resp = await fetch(dept_route + '/' + id, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const department = await resp.json()
         return department
@@ -160,11 +163,11 @@ const fetchDeptById = async (id) => {
     }
 }
 
-const fetchDeptsNameId = async () => {
+const fetchDeptsNameId = async (token) => {
     try {
         const resp = await fetch(dept_route + '/catagory/names', {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const depts_name_id = await resp.json()
         return depts_name_id
@@ -173,11 +176,11 @@ const fetchDeptsNameId = async () => {
     }
 }
 
-const fetchEmpsNotDept = async (id) => {
+const fetchEmpsNotDept = async (id, token) => {
     try {
         const resp = await fetch(dept_route + '/notInDepartment/' + id, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const unassignedEmps = await resp.json()
         return unassignedEmps
@@ -186,30 +189,30 @@ const fetchEmpsNotDept = async (id) => {
     }
 }
 
-const createDepartment = async (dept) => {
+const createDepartment = async (dept, token) => {
     try {
         const resp = await fetch(`${dept_route}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // token
+                "x-access-token": token
             },
             body: JSON.stringify({ ...dept })
         })
-        const result = await resp.json()
-        return result
+        const department = await resp.json()
+        return department
     } catch (e) {
         console.log(e)
     }
 }
 
-const updateDepartment = async (id, dept) => {
+const updateDepartment = async (id, dept, token) => {
     try{
         const resp = await fetch(`http://localhost:3000/department/${id}`, {
             method: "PATCH",
             headers: {
-            "Content-Type": "application/json",
-            // token
+                "Content-Type": "application/json",
+                "x-access-token": token
             },
             body: JSON.stringify({ ...dept })
         })
@@ -220,10 +223,11 @@ const updateDepartment = async (id, dept) => {
     }  
 }
 
-const deleteDepartment = async (id) => {
+const deleteDepartment = async (id, token) => {
     try {
         const resp = await fetch(`${dept_route}/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: { "x-access-token": token }
         })
         const result = await resp.json()
         return result
@@ -236,11 +240,11 @@ const deleteDepartment = async (id) => {
 
 const shift_route = "http://localhost:3000/shift"
 
-const fetchShifts = async () => {
+const fetchShifts = async (token) => {
     try {
         let resp = await fetch(shift_route, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const shifts = await resp.json()
         return shifts
@@ -249,11 +253,11 @@ const fetchShifts = async () => {
     }
 }
 
-const fetchUnassigned = async (id) => {
+const fetchUnassigned = async (id, token) => {
     try {
         const resp = await fetch(shift_route + '/emp/' + id, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const depts_name_id = await resp.json()
         return depts_name_id
@@ -262,13 +266,13 @@ const fetchUnassigned = async (id) => {
     }
 }
 
-const createShift = async (shift) => {
+const createShift = async (shift, token) => {
     try {
         const resp = await fetch(shift_route, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // token
+                "x-access-token": token
             },
             body: JSON.stringify({ ...shift })
         })
@@ -279,13 +283,13 @@ const createShift = async (shift) => {
     }
 }
 
-const createEmpShift = async (empShift) => {
+const createEmpShift = async (empShift, token) => {
     try {
         const resp = await fetch(`${shift_route}/empInShift`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // token
+                "x-access-token": token
             },
             body: JSON.stringify({ ...empShift })
         })
@@ -296,18 +300,18 @@ const createEmpShift = async (empShift) => {
     }
 }
 
-const updateShift = async (id, shift) => {
+const updateShift = async (id, shift, token) => {
     try {
         const resp = await fetch(`${shift_route}/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                // token
+                "x-access-token": token
             },
             body: JSON.stringify({ ...shift })
         })
         const updatedShift = await resp.json() 
-        console.log(updatedShift)
+        return updatedShift
     } catch (e) {
         console.log(e)
     }

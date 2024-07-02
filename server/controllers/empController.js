@@ -1,5 +1,6 @@
 const empService = require("../services/empService")
 const express = require('express');
+const jwt = require('jsonwebtoken')
 
 // Entry point of http://localhost:3000/emps
 
@@ -7,26 +8,34 @@ const router = express.Router();
 
 // Get all employees
 router.get('/', async (req, res) => {
-    // const token = req.headers["x-access-token"]
-    // if (!token) return res.status(401).json({ message: "No token provided" })
-
+    const token = req.headers["x-access-token"]
     try {
-        // const decoded = jwt.verify(token, `$(process.env.JWT_SECRET)`)
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
         const emps = await empService.getEmpsData();
         res.send(emps);
     } catch (e) {
-        res.send(e);
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
+        }
+        res.status(401).send(e)
     }
 })
 
 // Get employee by id
 router.get('/:id', async (req, res) => {
+    const token = req.headers["x-access-token"]
     try {
-        const { id } = req.params;
-        const emp = await empService.getEmpById(id);
-        res.send(emp);
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
+        const { id } = req.params
+        const emp = await empService.getEmpById(id)
+        res.send(emp)
     } catch (e) {
-        res.send(e);
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
+        }
+        res.status(401).send(e)
     }
 })
 
@@ -37,7 +46,7 @@ router.get('/department/:dept_id', async (req, res) => {
         const emp = await empService.getEmpsByDepartment(dept_id);
         res.send(emp);
     } catch (e) {
-        res.send(e);
+        res.status(401).send(e)
     }
 })
 
@@ -47,34 +56,48 @@ router.get('/catagory/managers', async (req, res) => {
         const managers = await empService.getManagers()
         res.send(managers)
     } catch (e) {
-        res.send(e)
+        res.status(401).send(e)
     }
 })
 
 // Get all not-managers employees
 router.get('/catagory/not_managers', async (req, res) => {
+    const token = req.headers["x-access-token"]
     try {
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
         const not_managers = await empService.getNotManagers()
         res.send(not_managers)
     } catch (e) {
-        res.send(e)
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
+        }
+        res.status(401).send(e)
     }
 })
 
 // Create new emp 
 router.post('/', async (req, res) => {
+    const token = req.headers["x-access-token"]
     try {
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
         const emp = req.body;
         const result = await empService.createEmp(emp)
         res.status(201).json({result});
     } catch (e) {
-        return res.status(401).send(e)
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
+        }
+        res.status(401).send(e)
     }
 })
 
 // Update employee by id
 router.patch('/:id', async (req, res) => {
+    const token = req.headers["x-access-token"]
     try {
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
         const { id } = req.params;
         const emp = req.body
         const updated_emp = await empService.updateEmpById(id, emp)
@@ -85,13 +108,19 @@ router.patch('/:id', async (req, res) => {
             ...managerCheck
         })
     } catch (e) {
-        return res.send(e)
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
+        }
+        res.status(401).send(e)
     }
 })
 
 // Delete employee (and his shifts) by id
 router.delete('/:id', async (req, res) => {
+    const token = req.headers["x-access-token"]
     try {
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
         const { id } = req.params;
         const result = await empService.deleteEmp(id)
         const managerCheck = await empService.checkIfManager(id)
@@ -101,11 +130,15 @@ router.delete('/:id', async (req, res) => {
             ...managerCheck
         })
     } catch (e) {
-        console.error('Error deleting employee:', e);
-        if (e.name === 'NotFoundError') {
-            return res.status(404).send({ error: 'Employee not found' });
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
         }
-        return res.status(500).send({ error: 'Internal Server Error' });
+        console.error('Error deleting employee:', e)
+        if (e.name === 'NotFoundError') {
+            return res.status(404).send({ error: 'Employee not found' })
+        }
+        return res.send(e)
     }
 })
 

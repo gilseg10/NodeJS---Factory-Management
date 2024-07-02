@@ -12,25 +12,30 @@ import {
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
-
     const urlParams = new URLSearchParams(window.location.search);
     const emp_id = urlParams.get('id')
-
+    // check if token exist   
+    const token = sessionStorage.getItem("token")
     try {
-        // fetch employee data and his shifts
-        const employee = await fetchEmpById(emp_id)
-        // fetch department names and ids 
-        const depts = await fetchDeptsNameId()
-        // fetch unassigned shifts of the employee
-        const unassignedShifts = await fetchUnassigned(emp_id)
-        arrangeData(employee, depts, unassignedShifts)
-        // check if the page was reloaded or navigated to
-        const navigationEntries = performance.getEntriesByType('navigation')
-        const navigationEntry = navigationEntries[0];
-        if (navigationEntry.type !== 'reload') {
-            const user_id = sessionStorage.getItem("id")
-            await addActionCheckAllowd(user_id, "Presenting Employee Info")
-        }
+        const employee = await fetchEmpById(emp_id, token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (employee.message) {
+            window.alert(employee.message)
+            window.location.href = "./login.html"
+        } else {
+            // fetch department names and ids 
+            const depts = await fetchDeptsNameId(token)
+            // fetch unassigned shifts of the employee
+            const unassignedShifts = await fetchUnassigned(emp_id, token)
+            arrangeData(employee, depts, unassignedShifts)
+            // check if the page was reloaded or navigated to
+            const navigationEntries = performance.getEntriesByType('navigation')
+            const navigationEntry = navigationEntries[0];
+            if (navigationEntry.type !== 'reload') {
+                const user_id = sessionStorage.getItem("id")
+                await addActionCheckAllowd(user_id, "Presenting Employee Info")
+            }
+        } 
     } catch (e) {
         console.log(e.message)
     }
@@ -101,15 +106,21 @@ async function updateEmp(event) {
 
     const emp_id = sessionStorage.getItem("emp_id")
     try {
-        const result = await updateEmployee(emp_id, {firstName, lastName, startWorkYear, departmentID})
-        sessionStorage.setItem("updateEmpResult", JSON.stringify(result))
-        window.alert(`${firstName} ${lastName} info was updated`)
-    
-        // if the employee is manager and we changed his department
-        // the department managerID will be updated to ""
-        if (result.isManager && result.departmentID !== result.departmentID_change) {
-            updateDeptNoManager(result.departmentID_change)
-        }
+        const token = sessionStorage.getItem("token")
+        const result = await updateEmployee(emp_id, {firstName, lastName, startWorkYear, departmentID}, token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (result.message) {
+            window.alert(result.message)
+            window.location.href = "./login.html"
+        } else {
+            sessionStorage.setItem("updateEmpResult", JSON.stringify(result))
+            window.alert(`${firstName} ${lastName} info was updated`)
+            // if the employee is manager and we changed his department
+            // the department managerID will be updated to ""
+            if (result.isManager && result.departmentID !== result.departmentID_change) {
+                updateDeptNoManager(result.departmentID_change)
+            }
+        }  
     } catch (e) {
         console.log(e.message)
     }
@@ -121,25 +132,33 @@ async function deleteEmp() {
     await addActionCheckAllowd(user_id, "Delete Employee")
     const emp_id = sessionStorage.getItem("emp_id")
     try {
-        const result = await deleteEmployee(emp_id)
-        sessionStorage.setItem("deleteResult", JSON.stringify(result))
-
-        // if the employee is manager, the department managerID will be updated to ""
-        if (result.isManager) {
-            updateDeptNoManager(result.departmentID_change)
-        }
-        window.alert(`Employee id: ${emp_id} was deleted`)
-        window.location.href = "./employees.html"
+        const token = sessionStorage.getItem("token")
+        const result = await deleteEmployee(emp_id, token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (result.message) {
+            window.alert(result.message)
+            window.location.href = "./login.html"
+        } else {
+            sessionStorage.setItem("deleteResult", JSON.stringify(result))
+            // if the employee is manager, the department managerID will be updated to ""
+            if (result.isManager) {
+                updateDeptNoManager(result.departmentID_change)
+            }
+            window.alert(`Employee id: ${emp_id} was deleted`)
+            window.location.href = "./employees.html"
+        } 
     } catch (e) {
         console.log(e.message)
     }
 }
 
 // internal function to update the deparment managerID field to "' in case of: 
-// 1. delete employee who is manager; 2. assigning (update) manager to a different department 
+// 1. delete employee who is manager; 2. assigning (update) manager to a different department
+// No check for token beacause it's taken care of in outside function 
 async function updateDeptNoManager (dept_id) {
     try{
-        const updatedDept = await updateDepartment(dept_id, { managerID: "" })  
+        const token = sessionStorage.getItem("token")
+        const updatedDept = await updateDepartment(dept_id, { managerID: "" }, token)  
         sessionStorage.setItem("updateResults", JSON.stringify(updatedDept))
     } catch (e) {
         console.log(e)
@@ -155,9 +174,16 @@ async function createNewEmpShift() {
             const msg = "Created New Employee Shift"
             const user_id = sessionStorage.getItem("id")
             await addActionCheckAllowd(user_id, msg)
-            const result = await createEmpShift({ employeeID, shiftID })
-            window.alert(msg)
-            window.location.reload()
+            const token = sessionStorage.getItem("token")
+            const result = await createEmpShift({ employeeID, shiftID }, token)
+            // if message then - 1) No token provided; 2) Invalid token
+            if (result.message) {
+                window.alert(result.message)
+                window.location.href = "./login.html"
+            } else {
+                window.alert(msg)
+                window.location.reload()
+            } 
         } catch (e) {
             console.log(e.message)
         }

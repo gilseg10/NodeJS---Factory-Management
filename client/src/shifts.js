@@ -9,21 +9,22 @@ import {
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
-
-    // const token = sessionStorage.getItem("token")
-    // if (!token) {
-    //     window.location.href = "./login.html"
-    // }
-
+    const token = sessionStorage.getItem("token")
     try {
-        const shifts = await fetchShifts()
-        arrangeData(shifts)
-        // check if the page was reloaded or navigated to
-        const navigationEntries = performance.getEntriesByType('navigation')
-        const navigationEntry = navigationEntries[0];
-        if (navigationEntry.type !== 'reload') {
-            const user_id = sessionStorage.getItem("id")
-            await addActionCheckAllowd(user_id, "Presenting Shifts Page")
+        const shifts = await fetchShifts(token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (shifts.message) {
+            window.alert(shifts.message)
+            window.location.href = "./login.html"
+        } else {
+            arrangeData(shifts)
+            // check if the page was reloaded or navigated to
+            const navigationEntries = performance.getEntriesByType('navigation')
+            const navigationEntry = navigationEntries[0];
+            if (navigationEntry.type !== 'reload') {
+                const user_id = sessionStorage.getItem("id")
+                await addActionCheckAllowd(user_id, "Presenting Shifts Page")
+            }
         }
     } catch (e) {
         console.log(e.message)
@@ -92,11 +93,18 @@ function arrangeData(shifts) {
 async function registerEmp(shiftID) {
     const employeeID = document.getElementById(shiftID+'_select').value
     const user_id = sessionStorage.getItem("id")
+    const token = sessionStorage.getItem("token")
     await addActionCheckAllowd(user_id, "Registerd Employee To Shift")
     try {
-        const result = await createEmpShift({ shiftID, employeeID })
-        sessionStorage.setItem("New EmpShift", JSON.stringify(result))
-        window.location.reload()
+        const result = await createEmpShift({ shiftID, employeeID }, token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (result.message) {
+            window.alert(result.message)
+            window.location.href = "./login.html"
+        } else {
+            sessionStorage.setItem("New EmpShift", JSON.stringify(result))
+            window.location.reload()
+        }
     } catch (e) {
         console.log(e)
     }
@@ -104,6 +112,7 @@ async function registerEmp(shiftID) {
 
 async function saveChanges() {
     const user_id = sessionStorage.getItem("id")
+    const token = sessionStorage.getItem("token")
     await addActionCheckAllowd(user_id, "Update Shifts Info")
     const dom_shifts = document.getElementById("tbody").children
     // let shifts = []
@@ -117,8 +126,12 @@ async function saveChanges() {
         
         if (startingHour < endingHour) {
             try {
-                const updatedShift = await updateShift(id, { date, startingHour, endingHour }) 
-                console.log(updatedShift)
+                const updatedShift = await updateShift(id, { date, startingHour, endingHour }, token) 
+                // if message then - 1) No token provided; 2) Invalid token
+                if (updatedShift.message) {
+                    window.alert(updatedShift.message)
+                    window.location.href = "./login.html"
+                }
             } catch (e) {
                 console.log(e)
             }
@@ -136,6 +149,7 @@ async function saveChanges() {
 async function createNewShift(event) {
     event.preventDefault()
     const user_id = sessionStorage.getItem("id")
+    const token = sessionStorage.getItem("token")
     await addActionCheckAllowd(user_id, "Created New Shift")
     const shiftDate = document.getElementById("date").value
     const date = shiftDate.split('-').reverse().join('/')
@@ -143,9 +157,15 @@ async function createNewShift(event) {
     const endingHour = document.getElementById("shift-end").value
     if (startingHour < endingHour) {
         try {
-            const result = await createShift({ date, startingHour, endingHour })
-            sessionStorage.setItem("New Shift", JSON.stringify(result))
-            window.location.reload()
+            const result = await createShift({ date, startingHour, endingHour }, token)
+            // if message then - 1) No token provided; 2) Invalid token
+            if (result.message) {
+                window.alert(result.message)
+                window.location.href = "./login.html"
+            } else {
+                sessionStorage.setItem("New Shift", JSON.stringify(result))
+                window.location.reload()
+            }
         } catch (e) {
             console.log(e)
         }

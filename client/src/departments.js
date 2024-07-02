@@ -4,17 +4,18 @@ import { fetchDepts, addAction } from './utils.js';
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
-
-    // const token = sessionStorage.getItem("token")
-    // if (!token) {
-    //     window.location.href = "./login.html"
-    // }
-
+    const token = sessionStorage.getItem("token")
     try {
-        const depts = await fetchDepts()
-        arrangeData(depts)
-        const user_id = sessionStorage.getItem("id")
-        await addActionCheckAllowd(user_id, "Presenting Departments Page")
+        const depts = await fetchDepts(token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (depts.message) {
+            window.alert(depts.message)
+            window.location.href = "./login.html"
+        } else {
+            arrangeData(depts)
+            const user_id = sessionStorage.getItem("id")
+            await addActionCheckAllowd(user_id, "Presenting Departments Page")
+        } 
     } catch (e) {
         console.log(e.message)
     }
@@ -23,7 +24,6 @@ async function loadData() {
 function arrangeData(depts) {
     // arrange employees info in the table
     const tbody = document.getElementById("tbody")
-
     depts.forEach(dept => {
         const deptTr = document.createElement("tr") // row
         const deptTdName = document.createElement("td") // name cell
@@ -37,7 +37,6 @@ function arrangeData(depts) {
         deptLink.innerText = dept.name
         deptLink.href = `edit_dept.html?id=${dept._id.valueOf()}`
         deptTdName.appendChild(deptLink)
-        
         dept.employees.forEach(emp => {
             // if manager, arrange manager cell
             if (emp.id === dept.managerID) {
@@ -54,11 +53,9 @@ function arrangeData(depts) {
                 empListUl.appendChild(empNameLi)
             }
         })      
-        
         if (!isManager) {
             managerTd.innerText = "NO MANAGER"
         }
-
         empListTd.appendChild(empListUl)
         deptTr.appendChild(deptTdName)
         deptTr.appendChild(managerTd)

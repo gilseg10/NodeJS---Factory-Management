@@ -3,8 +3,15 @@ import { fetchNotManagers, createDepartment, updateEmployee, addAction} from './
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("user_name").innerText = name
+    // check if token exist   
+    const token = sessionStorage.getItem("token")
     try {
-        const not_managers = await fetchNotManagers()
+        const not_managers = await fetchNotManagers(token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (not_managers.message) {
+            window.alert(not_managers.message)
+            window.location.href = "./login.html"
+        }  
         arrangeData(not_managers)
     } catch (e) {
         console.log(e)
@@ -23,21 +30,29 @@ function arrangeData(not_managers) {
 
 async function createDept(event) {
     event.preventDefault()
+    const token = sessionStorage.getItem("token")
     const name = document.getElementById("dept_name").value
     const managerID = document.getElementById("not-managers").value
     // create new deprtment object
     try {
-        const {result} = await createDepartment({ name, managerID })
-        // check allowd actions
-        const user_id = sessionStorage.getItem("id")
-        const msg = "Created New Deparment"
-        await addActionCheckAllowd(user_id, msg)
-        // update the departmentID of this employee (now department manager)
-        const emp_id = managerID
-        const departmentID = result._id.valueOf()
-        const updatedEmp = await updateEmployee(emp_id, { departmentID })
-        window.alert(msg)
-        window.location.href = "./departments.html"
+        const result = await createDepartment({ name, managerID }, token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (result.message) {
+            window.alert(result.message)
+            window.location.href = "./login.html"
+        } 
+        else {
+            // check allowd actions
+            const user_id = sessionStorage.getItem("id")
+            const msg = "Created New Deparment"
+            await addActionCheckAllowd(user_id, msg)
+            // update the departmentID of this employee (now department manager)
+            const emp_id = managerID
+            const departmentID = result.result._id.valueOf()
+            const updatedEmp = await updateEmployee(emp_id, { departmentID }, token)
+            window.alert(msg)
+            window.location.href = "./departments.html"
+        }
     } catch (e) {
         console.log(e)
     }

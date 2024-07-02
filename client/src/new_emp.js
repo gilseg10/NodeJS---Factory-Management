@@ -4,8 +4,15 @@ import { createEmployee, fetchDeptsNameId, addAction } from './utils.js';
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
+    // check if token exist   
+    const token = sessionStorage.getItem("token")
     try {
-        const depts = await fetchDeptsNameId()
+        const depts = await fetchDeptsNameId(token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (depts.message) {
+            window.alert(depts.message)
+            window.location.href = "./login.html"
+        }  
         arrangeData(depts)
     } catch (e) {
         console.log(e)
@@ -26,6 +33,7 @@ function arrangeData(depts) {
 async function createEmp(event) {
     event.preventDefault()
     const user_id = sessionStorage.getItem("id")
+    const token = sessionStorage.getItem("token")
     const msg = "Created New Employee"
     await addActionCheckAllowd(user_id, msg)
     const firstName = document.getElementById("firstName").value
@@ -34,10 +42,16 @@ async function createEmp(event) {
     const departmentID = document.getElementById("department").value
 
     try {
-        const result = await createEmployee({ firstName, lastName, startWorkYear, departmentID })
-        sessionStorage.setItem("New Emp", JSON.stringify(result))
-        window.alert(msg)
-        window.location.href = "./employees.html"
+        const result = await createEmployee({ firstName, lastName, startWorkYear, departmentID }, token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (result.message) {
+            window.alert(result.message)
+            window.location.href = "./login.html"
+        } else {
+            sessionStorage.setItem("New Emp", JSON.stringify(result))
+            window.alert(msg)
+            window.location.href = "./employees.html"
+        }  
     } catch (e) {
         console.log(e)
     }

@@ -3,18 +3,20 @@ import { fetchEmps, fetchDeptsNameId, addAction } from './utils.js';
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
     document.getElementById("name").innerText = name
-    
-    // const token = sessionStorage.getItem("token")
-    // if (!token) {
-    //     window.location.href = "./login.html"
-    // }
-        
+    // check if token exist   
+    const token = sessionStorage.getItem("token")
     try {
-        const emps = await fetchEmps()
-        const depts_name_id = await fetchDeptsNameId()
-        arrangeData(emps, depts_name_id)
-        const user_id = sessionStorage.getItem("id")
-        await addActionCheckAllowd(user_id, "Presenting Employees Page")
+        const emps = await fetchEmps(token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (emps.message) {
+            window.alert(emps.message)
+            window.location.href = "./login.html"
+        } else {
+            const depts_name_id = await fetchDeptsNameId(token)
+            arrangeData(emps, depts_name_id)
+            const user_id = sessionStorage.getItem("id")
+            await addActionCheckAllowd(user_id, "Presenting Employees Page")
+        } 
     } catch (e) {
         console.log(e.message)
     }
@@ -23,7 +25,6 @@ async function loadData() {
 function arrangeData(emps, depts_name_id) {
     // arrange employees info in the table
     const tbody = document.getElementById("tbody")
-
     emps.forEach(emp => {
         const empTr = document.createElement("tr")
         const empTdName = document.createElement("td")
@@ -37,15 +38,6 @@ function arrangeData(emps, depts_name_id) {
             shiftIL.innerText = shift.date + ": " + shift.startingHour + "-" + shift.endingHour
             empUlShifts.appendChild(shiftIL)
         })
-            
-            // editButton.onclick = () => {
-            //     sessionStorage.setItem("prodData", JSON.stringify(prod))
-            
-            //     window.location.href = "./addOrUpdate.html"
-            // }
-                
-                
-
         empLink.innerText = emp.name
         empLink.href = `edit_emp.html?id=${emp.id}`
         empTdName.appendChild(empLink)
@@ -57,12 +49,8 @@ function arrangeData(emps, depts_name_id) {
         empTr.appendChild(empTdName)
         empTr.appendChild(empTdDept)
         empTr.appendChild(empTdShifts)
-
-
         tbody.appendChild(empTr)
-
     })
-
     // arrange department names in the dropdown
     const select_tag = document.getElementById("departments")
     depts_name_id.forEach(dept => {
