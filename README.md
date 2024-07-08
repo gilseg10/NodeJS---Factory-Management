@@ -36,6 +36,7 @@ Details:
 
 - Users are predefined in the database collection, and their credentials (username and email) are verified against the [JSONplaceholder](https://jsonplaceholder.typicode.com/) REST API.
 - After login, the user's name will be displayed on every page.
+- On every page there is also "Back To Login" button.
 
 ### Menu Page
 
@@ -89,3 +90,22 @@ Details:
 ### Users Page
 
 - Displays a table of user data (name, maximum daily actions, and remaining actions).
+
+## Restoring MongoDB Dump Using `mongorestore`
+
+To restore the MongoDB database used by this project, follow these steps:
+
+1. **Download and Install MongoDB Database Tools:**
+   - If MongoDB Database Tools is not installed, download and install it from the [MongoDB Download Center](https://www.mongodb.com/try/download/database-tools) based on your operating system.
+
+2. **Open a Terminal or Command Prompt in MongoDB Data Tools bin directory:**
+   - Open a new terminal or command prompt window.
+   - Change directory to the MongoDB bin directory where `mongorestore` is located.
+
+3. **Run `mongorestore` Command:**
+   - Use the `mongorestore` command to restore the dump file into your MongoDB:
+     ```bash
+     mongorestore --archive=node_project.dump --db node_project
+     ```
+     - Replace `node_project.dump` with the full path to your dump file if you're not in the same directory.
+     - `--db node_project`: Specifies the name of the database where the data will be restored. Adjust this if your database has a different name.
