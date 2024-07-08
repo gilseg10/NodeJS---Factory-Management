@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factory Menu</title>
     <link rel="stylesheet" href="./style/menu.css">
+    <link rel="stylesheet" href="./style/mutual.css">
 </head>
 <body>
     <div class="menu-container">
-        <h1>Factory Menu</h1>
-        <h2 id="name"></h2>
+        <div class="nameAndBackLogin">
+            <h1 id="name"></h1>
+            <button id="backToLogin" onclick='window.location.href = "./login.html"'>Back To Login</button>
+        </div>
+        <h2>Factory Menu</h2>
         <div class="menu-card">
             <a href="employees.html">Employees Page</a>
             <strong>Manage employee information</strong>

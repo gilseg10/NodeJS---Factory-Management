@@ -1,0 +1,55 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.nameAndBackLogin {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    position: relative; 
+}
+
+#user_name {
+    flex-grow: 1;
+    text-align: center; 
+}
+
+#backToLogin {
+    position: absolute;
+    right: 0; 
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #145498;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition-duration: 0.2s;
+}
+
+button:hover {
+    background-color: #023469;
+    font-weight: bold;
+    font-size: 16px;
+    transition-duration: 0.2s;
+}

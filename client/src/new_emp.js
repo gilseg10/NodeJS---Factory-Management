@@ -3,7 +3,7 @@ import { createEmployee, fetchDeptsNameId, addAction } from './utils.js';
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
-    document.getElementById("name").innerText = name
+    document.getElementById("user_name").innerText = name
     // check if token exist   
     const token = sessionStorage.getItem("token")
     try {
@@ -48,7 +48,6 @@ async function createEmp(event) {
             window.alert(result.message)
             window.location.href = "./login.html"
         } else {
-            sessionStorage.setItem("New Emp", JSON.stringify(result))
             window.alert(msg)
             window.location.href = "./employees.html"
         }  
@@ -71,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('backToEmps').addEventListener('click', () => {
         window.location.href = "./employees.html";
+    });
+    document.getElementById('backToLogin').addEventListener('click', () => {
+        window.location.href = "./login.html";
     });
 });
 

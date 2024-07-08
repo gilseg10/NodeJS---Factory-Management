@@ -1,24 +1,3 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f0f0f0;
-}
-
-h1, h2 {
-    text-align: center;
-    color: #333;
-}
-
-h1 {
-    margin-bottom: 10px;
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
 /* Container Styles */
 .container {
     display: flex;
@@ -35,11 +14,11 @@ h2 {
 }
 
 table {
-    width: 100%; /* Adjust the width as needed to shorten the table */
+    width: 100%;
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin: 0 auto; /* Center the table */
+    margin: 0 auto;
     border: solid #8ba7c4 1px;
 }
 
@@ -180,23 +159,8 @@ input {
     margin-top: 20px;
 }
 
-.button-group button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #145498;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
+button, .button-group button {
     width: auto;
-    transition-duration: 0.2s;
-}
-
-.button-group button:hover {
-    background-color: #023469;
-    font-weight: bold;
-    font-size: 16px;
-    transition-duration: 0.2s;
 }
 
 /* Responsive Design */

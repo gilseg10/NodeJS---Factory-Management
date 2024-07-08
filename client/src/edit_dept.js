@@ -166,6 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('backToDepts').addEventListener('click', () => {
         window.location.href = "./departments.html";
     });
+    document.getElementById('backToLogin').addEventListener('click', () => {
+        window.location.href = "./login.html";
+    });
 });
 
 window.loadData = loadData;

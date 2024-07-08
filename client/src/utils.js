@@ -2,11 +2,11 @@
 
 const users_route = "http://localhost:3000/users"
 
-const fetchUsers = async () => {
+const fetchUsers = async (token) => {
     try {
         const resp = await fetch(users_route, {
             method: "GET",
-            // headers: { "x-access-token": token }
+            headers: { "x-access-token": token }
         })
         const users = await resp.json()
         return users
@@ -15,19 +15,46 @@ const fetchUsers = async () => {
     }
 }
 
+const checkActionAllowd = async (jph_id) => {
+    try {
+        const resp = await fetch(`${users_route}/actionAllowd/${jph_id}`, {
+            method: "GET",
+        })
+        const actionAllowd = await resp.json()
+        return actionAllowd
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
+const send_login = async (user_cred) => {
+    try {
+        const resp = await fetch(users_route + '/login', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user_cred)
+        })
+        const data = await resp.json()
+        return data
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
 const addAction = async (user_id) => {
-    // DUMMY - disconnect actions for now
-    return {action: {actionAllowd: 1}}
-    // try {
-    //     const resp = await fetch(users_route + '/' + user_id, {
-    //         method: "GET",
-    //         // headers: { "x-access-token": token }
-    //     })
-    //     const action = await resp.json()
-    //     return action
-    // } catch (e) {
-    //     console.log(e.message)
-    // }
+    // // DUMMY - disconnect actions
+    // return {action: {actionAllowd: 1}}
+    try {
+        const resp = await fetch(users_route + '/' + user_id, {
+            method: "GET",
+        })
+        const action = await resp.json()
+        return action
+    } catch (e) {
+        console.log(e.message)
+    }
 }
 
 // -------------- Employees End Points --------------
@@ -319,6 +346,8 @@ const updateShift = async (id, shift, token) => {
 
 module.exports = {
     fetchUsers,
+    checkActionAllowd,
+    send_login,
     addAction,
 
     fetchEmps,

@@ -1,24 +1,3 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f0f0f0;
-}
-
-h1, h2 {
-    text-align: center;
-    color: #333;
-}
-
-h1 {
-    margin-bottom: 10px;
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
 /* Form Styles */
 form {
     width: 30%;
@@ -59,29 +38,15 @@ input, select {
 }
 
 button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #145498;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
+    /* more button css in mutual.css */
     display: block;
-    width: 50%;
-    margin-bottom: 10px;
 }
 
-button:hover {
-    background-color: #023469;
-    font-weight: bold;
-    font-size: 16px;
-    transition-duration: 0.2s;
-}
 
 button.cancel-button {
-    width: 10%; /* 20% width */
-    background-color: #FF0000; /* Red color for cancel button */
-    margin: 20px auto 0 auto; /* Center the button */
+    width: 10%; 
+    background-color: #FF0000; 
+    margin: 20px auto 0 auto; 
 }
 
 button.cancel-button:hover {

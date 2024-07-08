@@ -10,6 +10,7 @@ module.exports = {
         bundle_edit_dept: './src/edit_dept.js',
         bundle_new_dept: './src/new_dept.js',
         bundle_shifts: './src/shifts.js',
+        bundle_login: './src/login.js',
     },
     output: {
         filename: 'bundles/[name].js',

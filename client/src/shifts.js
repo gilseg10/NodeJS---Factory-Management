@@ -8,7 +8,7 @@ import {
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
-    document.getElementById("name").innerText = name
+    document.getElementById("user_name").innerText = name
     const token = sessionStorage.getItem("token")
     try {
         const shifts = await fetchShifts(token)
@@ -216,6 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('backToMenuBtn').addEventListener('click', () => {
         window.location.href = "./menu.html";
+    });
+    document.getElementById('backToLogin').addEventListener('click', () => {
+        window.location.href = "./login.html";
     });
 });
 

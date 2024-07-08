@@ -1,30 +1,9 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f0f0f0;
-}
-
-h1, h2 {
-    text-align: center;
-    color: #333;
-}
-
-h1 {
-    margin-bottom: 10px;
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
 /* Container Styles */
 .container {
     display: flex;
     justify-content: space-evenly;
     margin-top: 20px;
-    gap: 30px; /* Controls the gap between form and transfer containers */
+    gap: 30px;
 }
 
 /* Form Container Styles */
@@ -58,25 +37,6 @@ input, select {
     display: block;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #145498;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 50%;
-    transition-duration: 0.2s;
-}
-
-button:hover {
-    background-color: #023469;
-    font-weight: bold;
-    font-size: 16px;
-    transition-duration: 0.2s;
-}
-
 .register-btn, .update-btn {
     padding: 10px 20px;
     border: none;
@@ -85,6 +45,10 @@ button:hover {
     cursor: pointer;
     border-radius: 5px;
     font-size: 14px;
+}
+
+.register-btn {
+    width: 50%;
 }
 
 .register-btn:hover, .update-btn:hover {
@@ -126,12 +90,12 @@ button:hover {
 }
 
 .button-group button {
-    width: 20%; /* Set a fixed width for buttons */
+    width: 20%;
     margin-bottom: 10px;
 }
 
 .delete-button {
-    background-color: #FF0000; /* Red color for delete button */
+    background-color: #FF0000;
     margin-top: 20px;
 }
 

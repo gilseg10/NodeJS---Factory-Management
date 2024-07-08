@@ -3,7 +3,7 @@ import { fetchDepts, addAction } from './utils.js';
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
-    document.getElementById("name").innerText = name
+    document.getElementById("user_name").innerText = name
     const token = sessionStorage.getItem("token")
     try {
         const depts = await fetchDepts(token)
@@ -79,6 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('backToMenuBtn').addEventListener('click', () => {
         window.location.href = "./menu.html";
+    });
+    document.getElementById('backToLogin').addEventListener('click', () => {
+        window.location.href = "./login.html";
     });
 });
 

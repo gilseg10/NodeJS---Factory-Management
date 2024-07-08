@@ -2,18 +2,24 @@ import { fetchUsers, addAction } from './utils.js';
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName");
-    document.getElementById("name").innerText = name;
-
+    document.getElementById("user_name").innerText = name;
+    const token = sessionStorage.getItem("token")
     try {
-        const users = await fetchUsers()
-        arrangeData(users)
-        // check if the page was reloaded or navigated to
-        const navigationEntries = performance.getEntriesByType('navigation')
-        const navigationEntry = navigationEntries[0];
-        // if just reloaded, dont count as action
-        if (navigationEntry.type !== 'reload') {
-            const user_id = sessionStorage.getItem("id")
-            await addActionCheckAllowd(user_id, "Presenting Users Page")
+        const users = await fetchUsers(token)
+        // if message then - 1) No token provided; 2) Invalid token
+        if (users.message) {
+            window.alert(users.message)
+            window.location.href = "./login.html"
+        } else {
+            arrangeData(users)
+            // check if the page was reloaded or navigated to
+            const navigationEntries = performance.getEntriesByType('navigation')
+            const navigationEntry = navigationEntries[0];
+            // if just reloaded, dont count as action
+            if (navigationEntry.type !== 'reload') {
+                const user_id = sessionStorage.getItem("id")
+                await addActionCheckAllowd(user_id, "Presenting Users Page")
+            }
         }
     } catch (e) {
         console.log(e.message);
@@ -48,5 +54,14 @@ async function addActionCheckAllowd(user_id ,msg) {
         window.location.href = "./login.html"
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backToMenuBtn').addEventListener('click', () => {
+        window.location.href = "./menu.html";
+    });
+    document.getElementById('backToLogin').addEventListener('click', () => {
+        window.location.href = "./login.html";
+    });
+});
 
 window.loadData = loadData;

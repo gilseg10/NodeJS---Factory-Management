@@ -35,11 +35,17 @@ router.post('/login', async (req, res) => {
 
 // get all users data: fullName, jph_id, maxActions and remaining actions 
 router.get('/', async (req, res) => {
+    const token = req.headers["x-access-token"]
     try {
+        jwt.verify(token, `$(process.env.JWT_SECRET)`)
         const users = await userService.getUsersData()
         res.send(users)
     } catch (e) {
-        res.send(e)
+        if (e.name === 'JsonWebTokenError') {
+            const msg = e.message === 'jwt malformed' ? "No token provided" : "Invalid token" 
+            return res.status(401).json({message: msg})  
+        }
+        res.status(401).send(e)
     }
 })
 
@@ -63,7 +69,5 @@ router.get('/actionAllowd/:id', async (req, res) => {
         res.send(e)
     }
 })
-
-// http://localhost:3000/users/actionAllowd/${data.jph_id}
 
 module.exports = router

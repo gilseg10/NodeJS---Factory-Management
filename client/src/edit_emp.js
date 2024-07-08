@@ -11,7 +11,7 @@ import {
 
 async function loadData() {
     const name = sessionStorage.getItem("fullName")
-    document.getElementById("name").innerText = name
+    document.getElementById("user_name").innerText = name
     const urlParams = new URLSearchParams(window.location.search);
     const emp_id = urlParams.get('id')
     // check if token exist   
@@ -216,6 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('backToShifts').addEventListener('click', () => {
         window.location.href = "./shifts.html";
+    });
+    document.getElementById('backToLogin').addEventListener('click', () => {
+        window.location.href = "./login.html";
     });
 });
 

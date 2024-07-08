@@ -9,14 +9,14 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/new_dept.js":
-/*!*************************!*\
-  !*** ./src/new_dept.js ***!
-  \*************************/
+/***/ "./src/login.js":
+/*!**********************!*\
+  !*** ./src/login.js ***!
+  \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ \"./src/utils.js\");\n/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils_js__WEBPACK_IMPORTED_MODULE_0__);\n\nasync function loadData() {\n  const name = sessionStorage.getItem(\"fullName\");\n  document.getElementById(\"user_name\").innerText = name;\n  // check if token exist   \n  const token = sessionStorage.getItem(\"token\");\n  try {\n    const not_managers = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.fetchNotManagers)(token);\n    // if message then - 1) No token provided; 2) Invalid token\n    if (not_managers.message) {\n      window.alert(not_managers.message);\n      window.location.href = \"./login.html\";\n    }\n    arrangeData(not_managers);\n  } catch (e) {\n    console.log(e);\n  }\n}\nfunction arrangeData(not_managers) {\n  const emp_select = document.getElementById('not-managers');\n  not_managers.forEach(emp => {\n    const empOpt = document.createElement(\"option\");\n    empOpt.value = emp.id;\n    empOpt.text = emp.name;\n    emp_select.appendChild(empOpt);\n  });\n}\nasync function createDept(event) {\n  event.preventDefault();\n  const token = sessionStorage.getItem(\"token\");\n  const name = document.getElementById(\"dept_name\").value;\n  const managerID = document.getElementById(\"not-managers\").value;\n  // create new deprtment object\n  try {\n    const result = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.createDepartment)({\n      name,\n      managerID\n    }, token);\n    // if message then - 1) No token provided; 2) Invalid token\n    if (result.message) {\n      window.alert(result.message);\n      window.location.href = \"./login.html\";\n    } else {\n      // check allowd actions\n      const user_id = sessionStorage.getItem(\"id\");\n      const msg = \"Created New Deparment\";\n      await addActionCheckAllowd(user_id, msg);\n      // update the departmentID of this employee (now department manager)\n      const emp_id = managerID;\n      const departmentID = result.result._id.valueOf();\n      const updatedEmp = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.updateEmployee)(emp_id, {\n        departmentID\n      }, token);\n      window.alert(msg);\n      window.location.href = \"./departments.html\";\n    }\n  } catch (e) {\n    console.log(e);\n  }\n}\nasync function addActionCheckAllowd(user_id, msg) {\n  const result = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.addAction)(user_id.toString());\n  sessionStorage.setItem(\"actionAllowd\", result.action.actionAllowd);\n  if (result.action.actionAllowd === 0) {\n    window.alert(`Notice! You have exhausted all the actions for today\\nLast Action: ${msg}`);\n    window.location.href = \"./login.html\";\n  }\n}\ndocument.addEventListener('DOMContentLoaded', () => {\n  document.getElementById('submit-form').addEventListener('submit', createDept);\n  document.getElementById('backToDepts').addEventListener('click', () => {\n    window.location.href = \"./departments.html\";\n  });\n  document.getElementById('backToLogin').addEventListener('click', () => {\n    window.location.href = \"./login.html\";\n  });\n});\nwindow.loadData = loadData;\n\n//# sourceURL=webpack:///./src/new_dept.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ \"./src/utils.js\");\n/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils_js__WEBPACK_IMPORTED_MODULE_0__);\n\nasync function login(event) {\n  event.preventDefault();\n  const username = document.getElementById(\"username\").value;\n  const email = document.getElementById(\"email\").value;\n  const data = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.send_login)({\n    username,\n    email\n  });\n  if (data.status === \"success\") {\n    const res = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.checkActionAllowd)(data.jph_id);\n    if (res.actionAllowd === 0) {\n      window.alert(\"You Have No More Action For Today\");\n    } else {\n      sessionStorage.setItem(\"token\", data.token);\n      sessionStorage.setItem(\"fullName\", data.fullName);\n      sessionStorage.setItem(\"id\", data.jph_id);\n      sessionStorage.setItem(\"actionAllowd\", data.actionAllowd);\n      window.location.href = \"./menu.html\";\n    }\n  } else {\n    console.log({\n      status: data.status,\n      message: data.error\n    });\n  }\n}\ndocument.addEventListener('DOMContentLoaded', () => {\n  document.getElementById('submit-login').addEventListener('submit', login);\n});\n\n//# sourceURL=webpack:///./src/login.js?");
 
 /***/ }),
 
@@ -102,7 +102,7 @@ eval("// -------------- Users End Points --------------\n\nconst users_route = \
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/new_dept.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/login.js");
 /******/ 	
 /******/ })()
 ;

@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style/users.css">
+    <link rel="stylesheet" href="./style/mutual.css">
     <title>Users Page</title>
 </head>
 <body onload="loadData()">
-    <h1 id="name"></h1>
+    <div class="nameAndBackLogin">
+        <h1 id="user_name"></h1>
+        <button id="backToLogin">Back To Login</button>
+    </div>
     <h2>Users Page</h2>
     <div class="controls">
-        <button onclick='window.location.href = "./menu.html"'>Back To Menu</button>
+        <button id="backToMenuBtn">Back To Menu</button>
     </div>
     <div id="users_table">
         <table>
